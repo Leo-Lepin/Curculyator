@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    vector <int> v;
+    string str;
+    getline(cin, str);
+    int c = 0;
+    bool isinp = 0;
+    for (auto i: str)
+    {
+      if (48 <= i && i <= 57){
+        c = c * 10 + int(i) - 48;
+        isinp = 1;
+      }
+      else if (isinp){
+        v.push_back(c);
+        c = 0;
+        isinp = 0;
+      }
+      
+    }
+    if (isinp)
+        v.push_back(c);
+}
