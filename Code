@@ -4,31 +4,46 @@
 
 using namespace std;
 
+vector <int> numbers;
+
+bool sch(bool mulpl, bool div, bool minus, int& c, int& tmp) {
+    if (mulpl) {
+        numbers.push_back(c * tmp);
+        mulpl = 0;
+        tmp = 0;
+    }
+    else if (minus) {
+        numbers.push_back(-c);
+        minus = 0;
+        tmp = 0;
+    }
+    else if (div && c) {
+        numbers.push_back(tmp / c);
+        div = 0;
+        tmp = 0;
+    }
+    else {
+        numbers.push_back(c);
+    }
+    c = 0;
+    return 0;
+}
 int main() {
     setlocale(LC_ALL, "Russian");
-    vector <int> numbers;
     string str;
     getline(cin, str);
     int c = 0, tmp = 0;
-    bool isinp = 0, mulpl = 0, div = 0;
+    bool isinp = 0, mulpl = 0, div = 0, minus = 0;
     for (auto i : str)
     {
         if (48 <= i && i <= 57) {
             c = c * 10 + int(i) - 48;
             isinp = 1;
         }
-        else if (isinp) {
-            if (div) {
-                numbers.push_back(c * tmp);
 
-            }
-            if (mulpl) {
-                numbers.push_back(tmp / c);
-            }
-            numbers.push_back(c);
-            c = 0;
-            isinp = 0;
-        }    
+        else if (isinp) {
+            isinp = sch(mulpl, div, minus, c, tmp);
+        }
         if ('/' == i) {
             tmp = numbers.back();
             numbers.pop_back();
@@ -39,12 +54,18 @@ int main() {
             numbers.pop_back();
             mulpl = 1;
         }
-            
-            // {1, 2, 7, 9, 40} tmp = 7; 7 * 88;
-            // v.back()
-            // v.pop_back()
-            // 5 / 6
+        else if ('-' == i) {
+
+            minus = 1;
+        }
     }
-    if (isinp)
-        numbers.push_back(c);
+    if (isinp) {
+        isinp = sch(mulpl, div, minus, c, tmp);
+    }
+    long long sum = 0;
+    for (auto i : numbers) {
+        //cout << i << endl;
+        sum += i;
+    }
+    cout << sum;
 }
