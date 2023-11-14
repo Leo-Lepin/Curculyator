@@ -26,19 +26,20 @@ bool sch(bool &mulpl, bool &divi, bool &minu, double& c, double& tmp,
     }
     else 
     {
-        numbers.push_back(c);// +
+        numbers.push_back(c);// Плюс
     }
     c = 0;
     return 0;
 }
 
-double body(string str)
+double body(string str)// Тело функции
 {
     vector <double> numbers;
     double c = 0, tmp = 0;
     double sum = 0;
     bool isinp = 0, mulpl = 0, divi = 0, minu = 0;
-    for (int j = 0; j < str.size(); j++)
+    
+    for (int j = 0; j < str.size(); j++)// Перебираем строку
     {
       char i = str[j];
         if (48 <= i && i <= 57) 
@@ -47,40 +48,39 @@ double body(string str)
             isinp = 1;
         }
 
-        else if (isinp) 
+        else if (isinp)// Если число закончилось
         {
             isinp = sch(mulpl, divi, minu, c, tmp, numbers);
         }
-      
-        if ('/' == i)
+
+        if ('/' == i)// Деление
         {
             tmp = numbers.back();
             numbers.pop_back();
             divi = 1;
         }
-        else if ('*' == i)
+        else if ('*' == i)// Умножение
         {
             tmp = numbers.back();
             numbers.pop_back();
             mulpl = 1;
         }
-        else if ('-' == i)
+        else if ('-' == i)// Минус
         {
-
             minu = 1;
         }
-        else if ('(' == i)
+        else if ('(' == i)// Скобки
         {
             string buf = "";
             int open = 1;
             j++;
             for(; j < str.size(); j++)
             {
-                if ('('  == str[j])
+                if ('('  == str[j])// Скобки
                 {
                     ++open;
                 }
-                else if (')' == str[j])
+                else if (')' == str[j])// Скобки
                 {
                     --open;
                 }
@@ -90,7 +90,6 @@ double body(string str)
                 }
                 buf.push_back(str[j]);
             }
-            // cout << str[j] << endl;
             double s1 = body(buf);
             isinp = sch(mulpl,divi, minu, s1, tmp, numbers);
         } 
@@ -98,9 +97,8 @@ double body(string str)
     if (isinp) {
         isinp = sch(mulpl,divi, minu, c, tmp, numbers);
     }
-    for (auto i : numbers) 
+    for (auto i : numbers)// Сумма
     {
-        // cout << '\t' << i << endl;
         sum += i;
     }
     return sum;
@@ -112,5 +110,5 @@ int main()
     bool issk = 0;
     getline(cin, str);
     cout << body(str);
-    
+
 }
